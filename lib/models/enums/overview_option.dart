@@ -1,0 +1,1 @@
+enum TodoOverviewOption { toggleAll , clearCompleted}

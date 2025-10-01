@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "414345647241",
+    "project_id": "logintodo-58665",
+    "storage_bucket": "logintodo-58665.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414345647241:android:777b7640d22def6bff2258",
+        "android_client_info": {
+          "package_name": "com.example.login_todo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmWGfHmbIv0nib4zO8LIrrRt7QRWyxVdI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

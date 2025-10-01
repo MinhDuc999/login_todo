@@ -1,0 +1,1 @@
+enum StatsStatus { initial, loading, success, failure }
