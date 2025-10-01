@@ -21,7 +21,6 @@ class TodoOverviewOptionButton extends StatelessWidget {
     final hasTodos = todos.isNotEmpty;
     final completedTodosAmount = todos.where((todo) => todo.isCompleted).length;
 
-
     return PopupMenuButton<TodoOverviewOption>(
       shape: const ContinuousRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -29,18 +28,14 @@ class TodoOverviewOptionButton extends StatelessWidget {
       onSelected: (option) {
         switch (option) {
           case TodoOverviewOption.toggleAll:
-              context.read<TodoBloc>().add(
-                  TodoToggleAllRequested(),
-              );
+            context.read<TodoBloc>().add(TodoToggleAllRequested());
           case TodoOverviewOption.clearCompleted:
-            context.read<TodoBloc>().add(
-              TodoClearCompletedRequested(),
-            );
+            context.read<TodoBloc>().add(TodoClearCompletedRequested());
           case TodoOverviewOption.logOut:
             context.read<AuthBloc>().add(AuthLogOutRequested());
         }
       },
-      itemBuilder: (context){
+      itemBuilder: (context) {
         return [
           PopupMenuItem(
             value: TodoOverviewOption.toggleAll,

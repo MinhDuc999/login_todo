@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_todo/bloc/todo_bloc/todo_bloc.dart';
 import 'package:login_todo/bloc/todo_bloc/todo_state.dart';
 import 'package:login_todo/bloc/todo_bloc/todo_event.dart';
-import 'package:login_todo/models/todos/todo_model.dart';
 import 'package:login_todo/presentations/pages/edit_todo_page.dart';
 
 class TodoOverviewPage extends StatelessWidget {
@@ -48,40 +47,59 @@ class TodoOverviewPage extends StatelessWidget {
           return ListView.builder(
             itemCount: todos.length,
             itemBuilder: (context, index) {
-              final TodoModel t = todos[index];
-              return ListTile(
-                leading: Checkbox(
-                  value: t.isCompleted,
-                  onChanged: (_) =>
-                      context.read<TodoBloc>().add(TodoToggleRequested(t.id)),
+              final t = todos[index];
+              return Dismissible(
+                key: ValueKey(t.id),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 20),
+                  child: const Icon(Icons.delete, color: Colors.white),
                 ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      t.title,
-                    ),
-                    Text(
-                      t.description,
-                    ),
-                  ],
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () =>
-                      context.read<TodoBloc>().add(TodoDeleteRequested(t.id)),
-                ),
-                onTap: () async{
-                  await Navigator.of(context).push(
-                      EditTodoPage.route(initialTodo: t),
-                  );
-                  if (context.mounted) {
-                    context.read<TodoBloc>().add(TodoLoadRequested());
-                  }
+                onDismissed: (_) {
+                  context.read<TodoBloc>().add(TodoDeleteRequested(t.id));
+                  final message = ScaffoldMessenger.of(context);
+                  message
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                      SnackBar(
+                        content: Text('Đã xóa ${t.title}'),
+                        action: SnackBarAction(
+                          label: 'Undo',
+                          onPressed: () {
+                            context.read<TodoBloc>().add(TodoUndoDeletionRequested());
+                          },
+                        ),
+                      ),
+                    );
                 },
+                child: ListTile(
+                  leading: Checkbox(
+                    value: t.isCompleted,
+                    onChanged: (_) =>
+                        context.read<TodoBloc>().add(TodoToggleRequested(t.id)),
+                  ),
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(t.title),
+                      Text(t.description),
+                    ],
+                  ),
+                  onTap: () async {
+                    await Navigator.of(context).push(
+                      EditTodoPage.route(initialTodo: t),
+                    );
+                    if (context.mounted) {
+                      context.read<TodoBloc>().add(TodoLoadRequested());
+                    }
+                  },
+                ),
               );
             },
           );
+
         }
         return const SizedBox.shrink();
       },

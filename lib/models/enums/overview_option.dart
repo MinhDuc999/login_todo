@@ -1,1 +1,1 @@
-enum TodoOverviewOption { toggleAll , clearCompleted, logOut}
+enum TodoOverviewOption { toggleAll, clearCompleted, logOut }
