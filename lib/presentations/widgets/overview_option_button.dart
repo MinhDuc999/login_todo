@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_todo/bloc/auth_bloc/auth_bloc.dart';
+import 'package:login_todo/bloc/auth_bloc/auth_event.dart';
 import 'package:login_todo/bloc/todo_bloc/todo_bloc.dart';
 import 'package:login_todo/bloc/todo_bloc/todo_event.dart';
 import 'package:login_todo/bloc/todo_bloc/todo_state.dart';
@@ -34,6 +36,8 @@ class TodoOverviewOptionButton extends StatelessWidget {
             context.read<TodoBloc>().add(
               TodoClearCompletedRequested(),
             );
+          case TodoOverviewOption.logOut:
+            context.read<AuthBloc>().add(AuthLogOutRequested());
         }
       },
       itemBuilder: (context){
@@ -51,6 +55,11 @@ class TodoOverviewOptionButton extends StatelessWidget {
             value: TodoOverviewOption.clearCompleted,
             enabled: hasTodos && completedTodosAmount > 0,
             child: Text("Clear Completed"),
+          ),
+          PopupMenuItem(
+            value: TodoOverviewOption.logOut,
+            enabled: true,
+            child: Text("LogOut"),
           ),
         ];
       },
